@@ -5,18 +5,18 @@ import { SoundPositioner } from './components/SoundCard'
 const defaultVolume = 0.5
 
 const audios = [
-	{ id: 'sound1', src: '/bonfire.mp3', label: 'Bonfire' },
-	{ id: 'sound2', src: '/city-ambience.mp3', label: 'City Ambience' },
-	{ id: 'sound3', src: '/crickets.mp3', label: 'Crickets' },
-	{ id: 'sound4', src: '/fire-crackling.mp3', label: 'Fire Crackling' },
-	{ id: 'sound5', src: '/flowing-water.mp3', label: 'Flowing Water' },
-	{ id: 'sound6', src: '/night-cyprus-sea.mp3', label: 'Night Cyprus Sea' },
-	{ id: 'sound7', src: '/old-train.mp3', label: 'Old Train' },
-	{ id: 'sound8', src: '/rain.mp3', label: 'Rain' },
-	{ id: 'sound9', src: '/sea-wave.mp3', label: 'Sea Wave' },
-	{ id: 'sound10', src: '/umbrella-rain.mp3', label: 'Umbrella Rain' },
-	{ id: 'sound11', src: '/waterfall.mp3', label: 'Waterfall' },
-	{ id: 'sound12', src: '/wind-chimes.mp3', label: 'Wind Chimes' },
+	{ id: 'sound1', src: '/audios/bonfire.mp3', label: 'Bonfire' },
+	{ id: 'sound2', src: '/audios/city-ambience.mp3', label: 'City Ambience' },
+	{ id: 'sound3', src: '/audios/crickets.mp3', label: 'Crickets' },
+	{ id: 'sound4', src: '/audios/fire-crackling.mp3', label: 'Fire Crackling' },
+	{ id: 'sound5', src: '/audios/flowing-water.mp3', label: 'Flowing Water' },
+	{ id: 'sound6', src: '/audios/night-cyprus-sea.mp3', label: 'Night Cyprus Sea' },
+	{ id: 'sound7', src: '/audios/old-train.mp3', label: 'Old Train' },
+	{ id: 'sound8', src: '/audios/rain.mp3', label: 'Rain' },
+	{ id: 'sound9', src: '/audios/sea-wave.mp3', label: 'Sea Wave' },
+	{ id: 'sound10', src: '/audios/umbrella-rain.mp3', label: 'Umbrella Rain' },
+	{ id: 'sound11', src: '/audios/waterfall.mp3', label: 'Waterfall' },
+	{ id: 'sound12', src: '/audios/wind-chimes.mp3', label: 'Wind Chimes' },
 ]
 
 export const App: React.FC = (): React.ReactElement => {
