@@ -40,7 +40,7 @@ export const App: React.FC = (): React.ReactElement => {
 					</div>
 					<p className="text-xl font-mono ml-[76px]">AMBIENT SOUND SYSTEM_</p>
 				</header>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl-grid-cols-4 gap-8">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 					{audios.map((sound) => (
 						<div key={sound.id} className="relative">
 							<SoundPositioner sound={sounds[sound.id]} audioUrl={sound.src} />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Waveform } from './WaveForm'
 import { XYMap } from './XYMap'
 
@@ -17,22 +17,31 @@ export const SoundPositioner: React.FC<SoundPositionerProps> = ({
 	audioUrl,
 }): React.ReactElement => {
 	const [position, setPosition] = useState({ x: 0, y: 0, z: 0 })
-	const [isEditing, setIsEditing] = useState(false)
+	const [isEditing, setIsEditing] = useState<boolean>(false)
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+	const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
 	useEffect(() => {
 		sound.pos(position.x / 150, position.y / 150, position.z)
+
+		sound.on('stop', () => {
+			setIsPlaying(false)
+		})
+
+		sound.on('play', () => {
+			setIsPlaying(true)
+		})
 	}, [position, sound])
 
-	const handlePositionChange = (newPosition: positions) => {
+	const handlePositionChange = useCallback((newPosition: positions) => {
 		setPosition((prev) => ({ ...prev, ...newPosition }))
-	}
+	}, [])
 
-	const handleZChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleZChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		const z = Number.parseFloat(e.target.value)
 		setPosition((prev) => ({ ...prev, z }))
-	}
+	}, [])
 
 	useEffect(() => {
 		if (containerRef.current) {
@@ -43,21 +52,13 @@ export const SoundPositioner: React.FC<SoundPositionerProps> = ({
 
 	return (
 		<div className="relative">
-			{isEditing ? (
-				<button
-					type="button"
-					className="w-10 h-10 p-2 i-carbon-close absolute top-1 right-1 z-20 hover:text-red transition-colors"
-					onClick={() => setIsEditing(false)}
-				/>
-			) : (
-				<button
-					type="button"
-					className="w-10 h-10 p-2 i-carbon-settings absolute top-2 right-2 z-20 hover:text-teal-400 transition-colors"
-					onClick={() => setIsEditing(true)}
-				/>
-			)}
+			<button
+				type="button"
+				className={`w-10 h-10 p-2 ${isEditing ? 'i-carbon-close top-1 right-1' : 'i-carbon-settings top-2 right-2'}  absolute z-20 hover:text-red transition-colors`}
+				onClick={() => setIsEditing((prev) => !prev)}
+			/>
 			<div
-				className={`absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col z-0 p-8 border-4 border-white border-solid hover:border-teal-400 transition-colors bg-white/5 gap-3 ${!isEditing && 'invisible'}`}
+				className={`absolute top-0 left-0 w-full h-full flex items-center justify-center flex-col z-0 p-8 border-4 ${isPlaying ? 'border-yellow-400' : 'border-white'} transition-all duration-150 border-solid hover:border-teal-400 transition-colors bg-white/5 gap-3 ${!isEditing ? 'invisible' : ''}`}
 			>
 				<div ref={containerRef} className="w-full h-full">
 					{dimensions.width && dimensions.height && (
@@ -94,7 +95,7 @@ export const SoundPositioner: React.FC<SoundPositionerProps> = ({
 
 			<button
 				type="button"
-				className={`w-full border-4 border-white border-solid hover:border-teal-400 transition-colors bg-white/5 relative z-10 ${isEditing && 'invisible'}`}
+				className={`w-full border-4 ${isPlaying ? 'border-yellow-400' : 'border-white'} border-solid hover:border-teal-400 transition-color duration-150 bg-white/5 relative z-10 ${isEditing ? 'invisible' : ''}`}
 				onClick={() => {
 					if (sound.playing()) {
 						sound.stop()
@@ -103,7 +104,10 @@ export const SoundPositioner: React.FC<SoundPositionerProps> = ({
 					}
 				}}
 			>
-				<div className="aspect-square bg-white/5 hover:bg-white/10 p-8 flex flex-col items-center justify-center">
+				<div className="aspect-square bg-white/5 hover:bg-white/10 p-8 flex flex-col items-center justify-center relative">
+					<p className="text-white absolute bottom-4 font-600 font-mono text-lg">
+						{isPlaying ? 'p l a y i n g . . .' : ''}
+					</p>
 					<div className="flex items-center gap-2 h-24">
 						<Waveform audioUrl={audioUrl} width={dimensions.width} />
 					</div>
