@@ -1,6 +1,6 @@
 import { Howl } from 'howler'
 import { useMemo } from 'react'
-import { SoundPositioner } from './components/SoundPositioner'
+import { SoundPositioner } from './components/SoundCard'
 
 const defaultVolume = 0.5
 

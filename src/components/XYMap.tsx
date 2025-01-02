@@ -6,7 +6,7 @@ type positions = {
 }
 
 type XYMapProps = {
-	onPositionChange: (position: { x: number; y: number }) => void
+	onPositionChange: (position: positions) => void
 	containerWidth: number
 	containerHeight: number
 }
