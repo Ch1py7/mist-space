@@ -13,7 +13,8 @@
     "howler": "^2.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-draggable": "^4.4.6"
+    "react-draggable": "^4.4.6",
+    "wavesurfer.js": "^7.8.14"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -21,9 +22,11 @@
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@types/wavesurfer.js": "^6.0.12",
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^15.14.0",
     "typescript": "~5.6.2",
+    "unocss": "^0.65.3",
     "vite": "^6.0.5"
   }
 }

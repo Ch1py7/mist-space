@@ -1,22 +1,15 @@
-import { defineConfig } from 'vite'
-import * as path from 'node:path'
 import react from '@vitejs/plugin-react'
+import path from 'node:path'
+import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
-  root: './',
-  publicDir: './public',
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    port: 5173,
-    strictPort: true,
-    watch: {
-      ignored: ['**/server/**'],
-    },
-  },
-  clearScreen: false,
-  plugins: [react()],
+	root: './',
+	publicDir: './public',
+	resolve: {
+		alias: {
+			components: path.resolve(__dirname, './src/components'),
+		},
+	},
+	plugins: [react(), UnoCSS()],
 })
