@@ -18,7 +18,7 @@ export const SoundSide: React.FC<SoundSideProps> = ({
 	return (
 		<button
 			type="button"
-			className={`w-full border-4 ${isPlaying ? 'border-yellow-400' : 'border-white'} border-solid hover:border-teal-400 transition-border duration-200 bg-white/5 relative z-10 ${isEditing ? 'invisible' : ''}`}
+			className={`w-full border-4 ${isPlaying ? 'border-yellow-400' : 'border-[#e2cbba]'} border-solid hover:border-teal-400 transition-border duration-200 bg-[#e2cbba]/5 relative z-10 ${isEditing ? 'invisible' : ''}`}
 			onClick={() => {
 				if (sound.playing()) {
 					sound.stop()
@@ -27,8 +27,8 @@ export const SoundSide: React.FC<SoundSideProps> = ({
 				}
 			}}
 		>
-			<div className="aspect-square bg-white/5 hover:bg-white/10 p-8 flex flex-col items-center justify-center relative">
-				<p className="text-white absolute bottom-4 font-600 font-mono text-lg">
+			<div className="aspect-square bg-[#e2cbba]/5 hover:bg-[#e2cbba]/10 p-8 flex flex-col items-center justify-center relative">
+				<p className="text-[#e2cbba] absolute bottom-4 font-600 font-mono text-lg">
 					{isPlaying ? 'p l a y i n g . . .' : ''}
 				</p>
 				<div className="flex items-center gap-2 h-24">

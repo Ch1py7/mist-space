@@ -31,9 +31,9 @@ export const App: React.FC = (): React.ReactElement => {
 	}, [])
 
 	return (
-		<div className="min-h-screen bg-black text-white">
+		<div className="min-h-screen bg-black text-[#e2cbba]">
 			<div className="container mx-auto px-4 py-12">
-				<header className="mb-16 border-b-4 border-white border-b-solid pb-8">
+				<header className="mb-16 border-b-4 border-[#e2cbba] border-b-solid pb-8">
 					<div className="flex items-center gap-4 mb-4 ">
 						<span className="w-12 h-12 p-2 i-app-wave" />
 						<h1 className="text-6xl font-mono uppercase tracking-tighter">MIST.SPACE</h1>
@@ -50,7 +50,7 @@ export const App: React.FC = (): React.ReactElement => {
 									<span className="i-carbon-volume-up w-6 h-6" />
 									<input
 										type="range"
-										className="w-32 accent-white hover:accent-teal-400"
+										className="w-32 accent-[#e2cbba] hover:accent-teal-400"
 										defaultValue={sounds[sound.id].volume() * 100}
 										onChange={(e) => {
 											const volume = Number.parseFloat(e.target.value) / 100
@@ -62,7 +62,7 @@ export const App: React.FC = (): React.ReactElement => {
 						</div>
 					))}
 				</div>
-				<footer className="mt-24 border-t-solid border-t-4 border-white pt-8 flex justify-between">
+				<footer className="mt-24 border-t-solid border-t-4 border-[#e2cbba] pt-8 flex justify-between">
 					<p className="font-mono text-xl uppercase">
 						SYSTEM STATUS: <span className="text-teal-400">OPERATIONAL</span>
 					</p>

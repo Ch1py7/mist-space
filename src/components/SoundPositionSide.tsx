@@ -49,7 +49,7 @@ export const SoundPosition: React.FC<SoundPositionerProps> = ({
 
 	return (
 		<div
-			className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-border duration-200 flex-col z-0 p-8 border-4 ${isPlaying ? 'border-yellow-400' : 'border-white'} border-solid hover:border-teal-400 transition-all bg-white/5 gap-3 ${!isEditing ? 'invisible' : ''}`}
+			className={`absolute top-0 left-0 w-full h-full flex items-center justify-center transition-border duration-200 flex-col z-0 p-8 border-4 ${isPlaying ? 'border-yellow-400' : 'border-[#e2cbba]'} border-solid hover:border-teal-400 transition-all bg-[#e2cbba]/5 gap-3 ${!isEditing ? 'invisible' : ''}`}
 		>
 			<div ref={containerRef} className="w-full h-full">
 				{dimensions.width && dimensions.height && (
@@ -61,7 +61,7 @@ export const SoundPosition: React.FC<SoundPositionerProps> = ({
 				)}
 			</div>
 			<div className="w-full">
-				<label className="block text-white/80">
+				<label className="block text-[#e2cbba]/80">
 					POSITION Z
 					<input
 						type="range"
@@ -74,8 +74,8 @@ export const SoundPosition: React.FC<SoundPositionerProps> = ({
 					/>
 				</label>
 			</div>
-			<div className="border-t-2 border-white/20 pt-4 border-t-solid w-full">
-				<p className="text-white/80 mb-2">CURRENT POSITION</p>
+			<div className="border-t-2 border-[#e2cbba]/20 pt-4 border-t-solid w-full">
+				<p className="text-[#e2cbba]/80 mb-2">CURRENT POSITION</p>
 				<div className="flex justify-evenly text-sm">
 					<p className="text-red">X: {(position.x / (dimensions.width / 2)).toFixed(2)}</p>
 					<p className="text-green">Y: {(position.y / (dimensions.height / 2)).toFixed(2)}</p>
