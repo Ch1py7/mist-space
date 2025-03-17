@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
-import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -8,8 +7,8 @@ export default defineConfig({
 	publicDir: './public',
 	resolve: {
 		alias: {
-			components: path.resolve(__dirname, './src/components'),
+			'@': path.resolve(__dirname, './src/'),
 		},
 	},
-	plugins: [react(), UnoCSS()],
+	plugins: [react()],
 })

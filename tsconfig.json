@@ -4,22 +4,27 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "module": "ES2022",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "jsx": "react-jsx",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"]
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "skipLibCheck": false,
+    "isolatedModules": true,
+    "outDir": "./dist",
+    "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*"],
+  "exclude": [
+    "./node_modules/**/*",
+    "./src/tests/**/*",
+    "./dist/**/*"
+  ]
 }

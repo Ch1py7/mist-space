@@ -1,88 +1,177 @@
 import { Howl } from 'howler'
-import { useMemo } from 'react'
-import { SoundPositioner } from './components/SoundCard'
+import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { ActiveCard } from './components/ActiveCard'
+import { BrutalismCard } from './components/BrutalismCard'
+import { SoundLibrary } from './components/SoundLibrary'
+import { SoundPositioner } from './components/SoundPositioner'
+import { type Audio, audios } from './lib/sounds'
 
 const defaultVolume = 0.5
 
-const audios = [
-	{ id: 'sound1', src: '/audios/bonfire.mp3', label: 'Bonfire' },
-	{ id: 'sound2', src: '/audios/city-ambience.mp3', label: 'City Ambience' },
-	{ id: 'sound3', src: '/audios/crickets.mp3', label: 'Crickets' },
-	{ id: 'sound4', src: '/audios/fire-crackling.mp3', label: 'Fire Crackling' },
-	{ id: 'sound5', src: '/audios/flowing-water.mp3', label: 'Flowing Water' },
-	{ id: 'sound6', src: '/audios/night-cyprus-sea.mp3', label: 'Night Cyprus Sea' },
-	{ id: 'sound7', src: '/audios/old-train.mp3', label: 'Old Train' },
-	{ id: 'sound8', src: '/audios/rain.mp3', label: 'Rain' },
-	{ id: 'sound9', src: '/audios/sea-wave.mp3', label: 'Sea Wave' },
-	{ id: 'sound10', src: '/audios/umbrella-rain.mp3', label: 'Umbrella Rain' },
-	{ id: 'sound11', src: '/audios/waterfall.mp3', label: 'Waterfall' },
-	{ id: 'sound12', src: '/audios/wind-chimes.mp3', label: 'Wind Chimes' },
-]
+export interface ActiveSounds {
+	id: string
+	name: string
+	icon: React.ReactNode
+	color: string
+	position: { x: number; y: number; z: number }
+	volume: number
+}
 
 export const App: React.FC = (): React.ReactElement => {
-	const sounds = useMemo(() => {
-		return audios.reduce(
+	const [masterMuted, setMasterMuted] = useState<boolean>(false)
+	const [masterVolume, setMasterVolume] = useState<number>(0.5)
+	const [sounds, setSounds] = useState<Audio[]>([])
+	const [activeSounds, setActiveSounds] = useState<ActiveSounds[]>([])
+	const [isPlaying, setIsPlaying] = useState(true)
+
+	const howlSounds = useMemo(() => {
+		return sounds.reduce(
 			(acc, { id, src }) => {
 				acc[id] = new Howl({ src: [src], volume: defaultVolume, loop: true })
 				return acc
 			},
 			{} as Record<string, Howl>
 		)
+	}, [sounds])
+
+	const handleAddSound = (sound: Audio) => {
+		if (activeSounds.some((active) => active.id === sound.id)) return
+
+		setActiveSounds((prev) => [
+			...prev,
+			{
+				...sound,
+				position: { x: 50, y: 50, z: 0 },
+				volume: defaultVolume,
+			},
+		])
+		howlSounds[sound.id]?.play()
+	}
+
+	const pauseSounds = () => {
+		setIsPlaying((prev) => {
+			activeSounds.forEach((active) => {
+				if (!prev) {
+					howlSounds[active.id].play()
+				} else {
+					howlSounds[active.id].pause()
+				}
+			})
+			return !prev
+		})
+	}
+
+	const muteSounds = () => {
+		setMasterMuted((prev) => {
+			activeSounds.forEach((active) => howlSounds[active.id].mute(!prev))
+			return !prev
+		})
+	}
+
+	useEffect(() => {
+		const keys = Object.keys(audios)
+		const flatAudios = keys.flatMap((k) => audios[k])
+
+		setSounds(flatAudios)
 	}, [])
 
+	useEffect(() => {
+		activeSounds.forEach((active) => {
+			const howl = howlSounds[active.id]
+			if (!howl.playing()) {
+				howl.play()
+			}
+		})
+	}, [activeSounds, howlSounds])
+
+	useEffect(() => {
+		activeSounds.forEach((active) => {
+			const howl = howlSounds[active.id]
+			const adjusteVolume = active.volume * masterVolume
+			howl.volume(adjusteVolume)
+		})
+	}, [activeSounds, howlSounds, masterVolume])
+
 	return (
-		<div className="min-h-screen bg-black text-[#e2cbba]">
-			<div className="container mx-auto px-4 py-12">
-				<header className="mb-16 border-b-4 border-[#e2cbba] border-b-solid pb-8">
-					<div className="flex items-center gap-4 mb-4 ">
-						<span className="w-12 h-12 p-2 i-app-wave" />
-						<h1 className="text-6xl font-mono uppercase tracking-tighter">MIST.SPACE</h1>
-					</div>
-					<p className="text-xl font-mono ml-[76px]">AMBIENT SOUND SYSTEM_</p>
+		<div className='min-h-screen bg-[#f0f0f0] p-6'>
+			<div className='max-w-7xl mx-auto'>
+				<header className='mb-8'>
+					<h1 className='text-5xl font-black text-black mb-2 tracking-tight'>AMBIENT SPACE</h1>
+					<p className='text-xl font-bold text-[#333]'>Create your perfect soundscape</p>
 				</header>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-					{audios.map((sound) => (
-						<div key={sound.id} className="relative">
-							<SoundPositioner sound={sounds[sound.id]} audioUrl={sound.src} />
-							<div className="mt-4 flex justify-between items-center">
-								<p className="font-mono text-2xl">{sound.label}</p>
-								<label className="flex items-center gap-2">
-									<span className="i-carbon-volume-up w-6 h-6" />
-									<input
-										type="range"
-										className="w-32 accent-[#e2cbba] hover:accent-teal-400"
-										defaultValue={sounds[sound.id].volume() * 100}
-										onChange={(e) => {
-											const volume = Number.parseFloat(e.target.value) / 100
-											sounds[sound.id].volume(volume)
-										}}
-									/>
-								</label>
+				<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+					<BrutalismCard>
+						<h2 className='text-2xl font-bold mb-4'>SOUND LIBRARY</h2>
+						<SoundLibrary onAddSound={handleAddSound} />
+					</BrutalismCard>
+					<BrutalismCard className='lg:col-span-2'>
+						<div className='flex justify-between items-center mb-4'>
+							<h2 className='text-2xl font-bold'>SOUND SPACE</h2>
+							<div className='flex items-center gap-4'>
+								<button
+									type='button'
+									onClick={() => pauseSounds()}
+									className='bg-[#ff3e3e] hover:bg-[#ff6b6b] text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm'
+								>
+									{isPlaying ? (
+										<Pause className='mr-2' size={16} />
+									) : (
+										<Play className='mr-2' size={16} />
+									)}
+									{isPlaying ? 'PAUSE' : 'PLAY'}
+								</button>
+								<div className='flex items-center gap-2'>
+									<button
+										type='button'
+										onClick={() => muteSounds()}
+										className='border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm'
+									>
+										{masterMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}{' '}
+									</button>
+									<div className='w-32'>
+										<input
+											type='range'
+											min={0}
+											max={100}
+											step={1}
+											onChange={(value) => setMasterVolume(Number(value.target.value) / 100)}
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-					))}
+						<SoundPositioner
+							sounds={activeSounds}
+							soundEdit={howlSounds}
+							setSound={setActiveSounds}
+							// onPositionChange={handlePositionChange}
+							// onVolumeChange={handleVolumeChange}
+							// onRemoveSound={handleRemoveSound}
+							// masterVolume={masterVolume}
+							// masterMuted={masterMuted}
+						/>
+					</BrutalismCard>
 				</div>
-				<footer className="mt-24 border-t-solid border-t-4 border-[#e2cbba] pt-8 flex justify-between">
-					<p className="font-mono text-xl uppercase">
-						SYSTEM STATUS: <span className="text-teal-400">OPERATIONAL</span>
-					</p>
-					<p className="font-mono text-xl uppercase">
-						MADE WITH{' '}
-						<span className="inline-block text-red-500 transition-all duration-300 ease-in-out hover:scale-120 hover:[text-shadow:0_0_0.6rem_#ff0000]">
-							❤️
-						</span>{' '}
-						BY:{' '}
-						<a
-							href="https://github.com/Ch1py7"
-							className="text-teal-400 decoration-none transition-all duration-150 hover:text-green-400"
-							target="_blank"
-							rel="noreferrer"
-						>
-							bulbsum
-						</a>
-					</p>
-				</footer>
 			</div>
+			<BrutalismCard className='mt-6 max-w-7xl mx-auto'>
+				<h2 className='text-2xl font-bold mb-4'>ACTIVE SOUNDS</h2>
+				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+					{activeSounds.map((sound) => (
+						<ActiveCard
+							key={sound.id}
+							sound={sound}
+							soundEdit={howlSounds[sound.id]}
+							setSound={setActiveSounds}
+						/>
+					))}
+					{activeSounds.length === 0 && (
+						<p className='text-gray-500 col-span-full text-center py-4'>
+							No active sounds. Add sounds from the library.
+						</p>
+					)}
+				</div>
+			</BrutalismCard>
 		</div>
 	)
 }
