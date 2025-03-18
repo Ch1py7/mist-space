@@ -94,51 +94,52 @@ export const App: React.FC = (): React.ReactElement => {
 	}, [activeSounds, howlSounds, masterVolume])
 
 	return (
-		<div className='min-h-screen bg-[#f0f0f0] p-6'>
+		<div className='min-h-screen bg-[#f0f0f0] p-4 xs:p-6'>
 			<div className='max-w-7xl mx-auto'>
 				<header className='mb-8'>
-					<h1 className='text-5xl font-black text-black mb-2 tracking-tight'>AMBIENT SPACE</h1>
-					<p className='text-xl font-bold text-[#333]'>Create your perfect soundscape</p>
+					<h1 className='text-3xl sm:text-4xl md:text-5xl font-black text-black mb-2 tracking-tight'>
+						AMBIENT SPACE
+					</h1>
+					<p className='text-lg sm:text-xl font-bold text-[#333]'>Create your perfect soundscape</p>
 				</header>
 				<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
 					<BrutalismCard>
-						<h2 className='text-2xl font-bold mb-4'>SOUND LIBRARY</h2>
+						<h2 className='text-xl sm:text-2xl font-bold mb-4'>SOUND LIBRARY</h2>
 						<SoundLibrary onAddSound={handleAddSound} />
 					</BrutalismCard>
 					<BrutalismCard className='lg:col-span-2'>
-						<div className='flex justify-between items-center mb-4'>
+						<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4'>
 							<h2 className='text-2xl font-bold'>SOUND SPACE</h2>
-							<div className='flex items-center gap-4'>
+							<div className='grid gap-4 grid-cols-2 xs:grid-cols-3 w-full md:w-auto items-center'>
 								<button
+									title={isPlaying ? 'pause' : 'play'}
 									type='button'
 									onClick={() => pauseSounds()}
-									className='bg-[#ff3e3e] hover:bg-[#ff6b6b] text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm'
+									className='bg-[#ff3e3e] hover:bg-[#ff6b6b] text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm rounded-md'
 								>
 									{isPlaying ? (
 										<Pause className='mr-2' size={16} />
 									) : (
 										<Play className='mr-2' size={16} />
 									)}
-									{isPlaying ? 'PAUSE' : 'PLAY'}
+									<p className='hidden xxs:inline'>{isPlaying ? 'PAUSE' : 'PLAY'}</p>
 								</button>
-								<div className='flex items-center gap-2'>
-									<button
-										type='button'
-										onClick={() => muteSounds()}
-										className='border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm'
-									>
-										{masterMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}{' '}
-									</button>
-									<div className='w-32'>
-										<input
-											type='range'
-											min={0}
-											max={100}
-											step={1}
-											onChange={(value) => setMasterVolume(Number(value.target.value) / 100)}
-										/>
-									</div>
-								</div>
+								<button
+									title={masterMuted ? 'mute' : 'unmute'}
+									type='button'
+									onClick={() => muteSounds()}
+									className='border-4 h-full border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex justify-center items-center px-4 py-1 text-sm rounded-md'
+								>
+									{masterMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}{' '}
+								</button>
+								<input
+									type='range'
+									min={0}
+									max={100}
+									step={1}
+									onChange={(value) => setMasterVolume(Number(value.target.value) / 100)}
+									className='w-full col-span-2 xs:col-span-1 progress'
+								/>
 							</div>
 						</div>
 						<SoundPositioner

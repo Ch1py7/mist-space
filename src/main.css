@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --breakpoint-xs: 32rem;
+  --breakpoint-xxs: 24rem;
+  --breakpoint-xxxs: 16rem;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -119,3 +125,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+input[type='range'] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background:#18181b;
+  height:7px;
+  border-radius: 10px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  background:white;
+  border: 2px #18181b solid;
+  height:18px;
+  width:18px;
+  border-radius: 100%;
+}
+
+
